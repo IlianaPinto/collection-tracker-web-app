@@ -24,6 +24,7 @@ app.use(express.json());
 
 //Routes
 app.use('/items',require('./routes/items'));
+app.use('/collections', require('./routes/collections'));
 
 // Static files
 app.use(express.static(__dirname+'/public'));
