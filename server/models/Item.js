@@ -2,12 +2,34 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Item = new Schema({
-    categoryID: String,
-    name: String,
-    value: Number,
-    year: Number,
-    condition: String,
-    location: String
+    categoryID: {
+        type: String,
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    value: {
+        type: Number,
+        required: true,
+    },
+    year: {
+        type: Number,
+        required: true,
+    },
+    condition: {
+        type: String,
+        required: true,
+    },
+    location: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        default: Date.now,
+    }
 });
 
 module.exports = mongoose.model('Item', Item);
