@@ -4,7 +4,7 @@ const router = express.Router();
 const Item = require('../models/Item');
 
 router.get('/', async (req,res) => {
-    const items = await Item.find(req.params.userID);
+    const items = await Item.find(req.params.categoryID);
     res.json(items);
 });
 

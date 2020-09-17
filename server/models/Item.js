@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Item = new Schema({
-    userID: String,
+    categoryID: String,
     name: String,
     value: Number,
     year: Number,
