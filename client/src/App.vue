@@ -16,7 +16,11 @@
             <a class="nav-link" href="/collections">My Collection <span class="sr-only">(current)</span></a>
           </li>
         </ul>
-        <button type="button" class="btn btn-outline-light">Sign up</button>
+        <div v-if="!$auth.loading">
+          <button v-if="!$auth.isAuthenticated" @click="login" type="button" class="btn btn-outline-light">Sign in</button>
+          <button v-if="$auth.isAuthenticated" @click="logout" type="button" class="btn btn-outline-danger">Log out</button>
+        </div>
+        
       </div>
       </div>
     </nav>
@@ -24,6 +28,24 @@
     <router-view/>
   </div>
 </template>
+
+<script>
+
+export default {
+  name: "App",
+  components: {},
+  methods:{
+    login(){
+      this.$auth.loginWithRedirect();
+    },
+    logout(){
+      this.$auth.logout({
+        returnTo: window.location.origin
+      })
+    }
+  }
+}
+</script>
 
 <style>
   .nav_color{
