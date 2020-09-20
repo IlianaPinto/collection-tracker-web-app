@@ -1,28 +1,23 @@
-import axios from axios;
+import axios from 'axios';
 
-const url = 'http://localhost:5000/collections/';
+const url = 'http://localhost:3000/api/collections/';
 
 class CollectionService{
     // Get collection
-    static getCollections(){
-        return new Promise( async (resolve, reject) => {
-            try {
-                const res = await axios.get(url);
-                const data = res.data;
-                resolve(
-                    data.map(collection => ({
-                        ...collection
-                    }))
-                );
-
-            } catch (err) {
-                reject(err);
-            }
-        })
+    static async getCollections(){
+        const res = await axios.get(url)
+        try {
+          const data = res.data
+          return data.map(collection => ({
+            ...collection,
+          }))
+        } catch (err) {
+          return err
+        }
     }
 
     // Create collection
-    static insertCollection(){
+    static insertCollection(data){
         return axios.post(url, {
             data
         });
@@ -34,9 +29,9 @@ class CollectionService{
     }
 
     // Update collection
-    static updateItem(id){
+    /*static updateItem(id){
         
-    }
+    }*/
 }
 
 export default CollectionService;

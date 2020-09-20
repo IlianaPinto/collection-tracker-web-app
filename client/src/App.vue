@@ -10,15 +10,15 @@
         <a class="navbar-brand" href="/"><strong> Collector Tracker</strong></a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0 ">
           <li class="nav-item active">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <!--<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>-->
           </li>
           <li class="nav-item active">
             <a class="nav-link" v-if="$auth.isAuthenticated" href="/collections">My Collection <span class="sr-only">(current)</span></a>
           </li>
         </ul>
         <div v-if="!$auth.loading">
-          <button v-if="!$auth.isAuthenticated" @click="login" type="button" class="btn btn-outline-light">Sign in</button>
-          <button v-if="$auth.isAuthenticated" @click="logout" type="button" class="btn btn-outline-danger">Log out</button>
+          <button v-if="!$auth.isAuthenticated" @click="login" type="button" class="btn btn-light">Sign in</button>
+          <button v-if="$auth.isAuthenticated" @click="logout" type="button" class="btn btn-danger">Log out</button>
         </div>
         
       </div>

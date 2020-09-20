@@ -23,8 +23,8 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 //Routes
-app.use('/items',require('./routes/items'));
-app.use('/collections', require('./routes/collections'));
+app.use('api/items',require('./routes/items'));
+app.use('api/collections', require('./routes/collections'));
 
 // Static files
 app.use(express.static(__dirname+'/public'));
