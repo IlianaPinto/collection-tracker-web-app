@@ -2,6 +2,8 @@
   <div class = "home">
     <!--<Carousel />-->
     <p>Home view</p>
+    <br><br>
+    
   </div>
 </template>
 
