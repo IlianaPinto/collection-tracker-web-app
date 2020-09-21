@@ -31,10 +31,10 @@
           
           <div class="modal-body">
             <!-- Collection form -->
-            <form>
+            <form @submit.prevent="addCollection()">
               <div class="form-group">
                 <label for="name">Collection name</label>
-                <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter your collection's name">
+                <input type="text" v-model="collection.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter your collection's name">
               </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-//import CollectionsService from '../services/CollectionService'
+import Collections from '../services/CollectionService';
 
 export default {
   name: 'Collections',
@@ -59,19 +59,40 @@ export default {
       collections: [],
       collection:{
         name: '',
-        userId: '',
+        userId: this.$auth.user.email,
+        
       },
     }
   },
   created(){
-    //this.getCollections();
+    this.getCollections();
   },
   methods: {
     getCollections(){
-      fetch('/api/collections')
-        .then((res) => res.json())
-        .then((data) => console.log(data));
+      //console.log(this.collection,"el array"); 
     },
+    async addCollection(){
+      /*fetch('http://localhost:3000/collections', {
+        method: 'POST',
+        body: JSON.stringify(this.collection),
+        headers:{
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+        }
+      })
+      .then(res => console.log(res, "res"));
+      this.collection.name = '';
+      this.collection.userId = '';*/
+
+      try {
+        this.collections = await Collections.getCollections();
+        console.log(this.collections);
+      } catch (error) {
+      //
+      }
+
+    },
+    
     isEmpty(){
       return this.collections != null;
     }

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3000/api/collections/';
+const url = 'http://localhost:3000/collections/';
 
 class CollectionService{
     // Get collection
@@ -8,6 +8,7 @@ class CollectionService{
         const res = await axios.get(url)
         try {
           const data = res.data
+          //console.log(data);
           return data.map(collection => ({
             ...collection,
           }))

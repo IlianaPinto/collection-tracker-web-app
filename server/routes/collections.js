@@ -5,7 +5,7 @@ const Collection = require('../models/Collection');
 
 router.get('/', async (req,res) => {
     try {
-        const collections = await Collection.find(req.params.userID);
+        const collections = await Collection.find();
         if(!collections) throw new Error('No collection');
         const sorted = collections.sort((a, b) => {
             return new Date(a.date).getTime() - new Date(b.date).getTime();       
