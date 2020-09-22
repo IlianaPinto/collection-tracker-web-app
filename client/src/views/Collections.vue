@@ -37,7 +37,7 @@
               <h3> {{ collection.name }} </h3>
               <div class="card"></div>
               <br>
-                <button type="button" data-toggle='modal' data-target="#update_collection" class="btn btn-primary btn-sm">Rename Collection</button>
+                <button type="button" data-toggle='modal' v-on:click="edit(collection)" data-target="#update_collection" class="btn btn-primary btn-sm">Rename Collection</button>
                 {{" "}}
                 <button type="button" class="btn btn-success btn-sm">Add Items</button>
                 {{" "}}
@@ -48,12 +48,12 @@
                   {{ collection.date }}
             </div>
 
-            <!-- Modal to ipdate a collection -->
-            <div class="modal fade" id="update_collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- Modal to update a collection -->
+            <div class="modal fade" id="update_collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Update a collection</h5>
+                    <h5 class="modal-title" id="exampleModalLabel3">Update a collection</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -68,7 +68,7 @@
                       </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button v-on:click="updateCollection(collection._id,collection.name)" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
+                          <button v-on:click="updateCollection()" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
                         </div>
                     </form>
                   </div>
@@ -143,11 +143,13 @@ export default {
       await Collections.deleteCollection(id);
       this.getCollections();
     },
-     async updateCollection(id,name){
-      this.collection.userId = this.$auth.user.email;
-      this.collection.name = name;
-      await Collections.updateCollection(id,this.collection);
+     async updateCollection(){
+      await Collections.updateCollection(this.collection.userId,this.collection);
       this.getCollections();
+      this.collection.name = '';
+    },
+    edit(data){
+      console.log(data.userID);
     },
     isEmpty(){
       return this.collections.length === 0;

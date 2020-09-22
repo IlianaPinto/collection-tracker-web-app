@@ -16,6 +16,11 @@ export default new Router({
             path: '/collections',
             name: 'collections',
             component: () => import('./views/Collections.vue')
+        },
+        {
+            path: '/collections/items',
+            name: 'items',
+            component: () => import('./views/Items.vue')
         }
     ]
 })

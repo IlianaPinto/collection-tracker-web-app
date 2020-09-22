@@ -1,0 +1,156 @@
+<template>
+  <div class="collections">
+    <br><br>
+    <!-- Check if there is an item -->
+    <div v-if='isEmpty()'>
+      <div class="container">
+          <div class="card text-center border-dark mb-3" >
+            <br>
+            <div class="container">
+            <h5 class="card-title">
+              <strong>Seems like your collection is empty</strong>
+            </h5>
+            <p class="card-text">Create one!</p>
+            <button type='button' class="btn btn-success" data-toggle='modal' data-target="#create_item">Get Started</button>
+            <br><br>
+          </div>
+        </div> 
+      </div>
+    </div>
+
+    <div v-if='!isEmpty()' class='container'>
+      <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_item">Add a new item</button>
+      <br><br>
+    </div>
+
+    <!-- Show the items created by the user -->
+    <div class="container">
+      <div class= "row">
+        <div class = "card border-dark col-md-4 text-center " 
+          v-for="(item, index) in items" 
+          v-bind:item="item"
+          v-bind:index="index"
+          v-bind:key="item._id"
+          >
+            <div class="text">
+              <br>
+              <h3> {{ item.name }} </h3>
+              <div class="card"></div>
+              <br>
+                <button type="button" data-toggle='modal' v-on:click="edit(item)" data-target="#update_item" class="btn btn-primary btn-sm">Rename Item</button>
+                {{" "}}
+                <button type="button" v-on:click="removeItem(item._id)" class="btn btn-danger btn-sm">Delete</button>
+                <br><br>
+              </div>
+              <div class="card-footer text-muted">
+                  {{ item.date }}
+            </div>
+
+            <!-- Modal to update an item -->
+            <div class="modal fade" id="update_item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel3">Update an Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  
+                  <div class="modal-body">
+                    <!-- Item form -->
+                    <form @submit.prevent="addItem">
+                      <div class="form-group">
+                        <label for="name">Item name</label>
+                        <input type="text" v-model="item.name" class="form-control" id="name" placeholder="Enter the item name">
+                      </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button v-on:click="updateItem()" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal to create a new item -->
+    <div class="modal fade" id="create_item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create an item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body">
+            <!-- Item form -->
+            <form @submit.prevent="addItem">
+              <div class="form-group">
+                <label for="name">Item name</label>
+                <input type="text" v-model="item.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter the item name">
+              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button v-on:click="addItem" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<script>
+import Items from '../services/ItemService';
+
+export default {
+  name: 'Items',
+  data(){
+    return {
+      items: [],
+      item:{
+        collectionId: '',
+        name: '',
+      },
+    }
+  },
+  created(){
+    this.getItems();
+  },
+  methods: {
+    async addItem(){
+      await Items.insertItem(this.item);
+      this.getItems();
+      this.item.name = '';
+    },
+    async getItems(){
+        this.items = await Items.getItems();
+    },
+    async removeItem(id){
+      await Items.deleteItem(id);
+      this.getItems();
+    },
+     async updateItem(){
+      await Items.updateItem();
+      this.getItems();
+      this.item.name = '';
+    },
+    edit(data){
+      console.log(data.userID);
+    },
+    isEmpty(){
+      return this.items.length === 0;
+    }
+  },
+  
+}
+</script>
