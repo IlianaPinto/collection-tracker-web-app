@@ -30,9 +30,9 @@ class CollectionService{
     }
 
     // Update collection
-    /*static updateItem(id){
-        
-    }*/
+    static updateCollection(id,data){
+        return axios.put(url+id,data);
+    }
 }
 
 export default CollectionService;

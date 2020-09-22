@@ -37,7 +37,7 @@
               <h3> {{ collection.name }} </h3>
               <div class="card"></div>
               <br>
-                <button type="button" class="btn btn-primary btn-sm">Rename Collection</button>
+                <button type="button" data-toggle='modal' data-target="#update_collection" class="btn btn-primary btn-sm">Rename Collection</button>
                 {{" "}}
                 <button type="button" class="btn btn-success btn-sm">Add Items</button>
                 {{" "}}
@@ -47,6 +47,35 @@
               <div class="card-footer text-muted">
                   {{ collection.date }}
             </div>
+
+            <!-- Modal to ipdate a collection -->
+            <div class="modal fade" id="update_collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update a collection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  
+                  <div class="modal-body">
+                    <!-- Collection form -->
+                    <form @submit.prevent="addCollection">
+                      <div class="form-group">
+                        <label for="name">Collection name</label>
+                        <input type="text" v-model="collection.name" class="form-control" id="name" placeholder="Enter your collection's name">
+                      </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button v-on:click="updateCollection(collection._id,collection.name)" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
         </div>
       </div>
     </div>
@@ -112,6 +141,12 @@ export default {
     },
     async removeCollection(id){
       await Collections.deleteCollection(id);
+      this.getCollections();
+    },
+     async updateCollection(id,name){
+      this.collection.userId = this.$auth.user.email;
+      this.collection.name = name;
+      await Collections.updateCollection(id,this.collection);
       this.getCollections();
     },
     isEmpty(){
