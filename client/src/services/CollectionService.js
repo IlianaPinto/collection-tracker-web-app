@@ -8,7 +8,6 @@ class CollectionService{
         const res = await axios.get(url)
         try {
           const data = res.data
-          //console.log(data);
           return data.map(collection => ({
             ...collection,
           }))
@@ -18,9 +17,10 @@ class CollectionService{
     }
 
     // Create collection
-    static insertCollection(data){
+    static insertCollection(collection){
         return axios.post(url, {
-            data
+            userID: collection.userId,
+            name: collection.name,
         });
     }
 
