@@ -30,7 +30,8 @@
           v-for="(collection, index) in collections" 
           v-bind:item="collection"
           v-bind:index="index"
-          v-bind:key="collection._id">
+          v-bind:key="collection._id"
+          >
             <div class="text">
               <br>
               <h3> {{ collection.name }} </h3>
@@ -40,7 +41,7 @@
                 {{" "}}
                 <button type="button" class="btn btn-success btn-sm">Add Items</button>
                 {{" "}}
-                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                <button type="button" v-on:click="removeCollection(collection._id)" class="btn btn-danger btn-sm">Delete</button>
                 <br><br>
               </div>
               <div class="card-footer text-muted">
@@ -70,7 +71,7 @@
               </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button v-on:click="addCollection" type="submit" class="btn btn-success">Submit</button>
+                  <button v-on:click="addCollection" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
                 </div>
             </form>
           </div>
@@ -101,19 +102,18 @@ export default {
   methods: {
     async addCollection(){
       this.collection.userId = this.$auth.user.email;
-      console.log(this.collection, "esta es la coleccion en el vue")
       await Collections.insertCollection((this.collection));
-      this.collections = await Collections.getCollections();
+      this.getCollections();
+      this.collection.name = '';
+      this.collection.userId = this.$auth.user.email;
     },
     async getCollections(){
-      try {
         this.collections = await Collections.getCollections();
-      } catch (error) {
-      //
-      }
-
     },
-    
+    async removeCollection(id){
+      await Collections.deleteCollection(id);
+      this.getCollections();
+    },
     isEmpty(){
       return this.collections.length === 0;
     }

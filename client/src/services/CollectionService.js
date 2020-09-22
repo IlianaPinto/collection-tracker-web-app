@@ -25,7 +25,7 @@ class CollectionService{
     }
 
     // Delete collection
-    static deletCollection(id){
+    static deleteCollection(id){
         return axios.delete(`${url}${id}`);
     }
 
