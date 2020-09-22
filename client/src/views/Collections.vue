@@ -25,58 +25,34 @@
 
     <!-- Show the collections created by the user -->
     <div class="container">
-      <div class= "row">
-        <div class = "card border-dark col-md-4 text-center " 
-          v-for="(collection, index) in collections" 
-          v-bind:item="collection"
-          v-bind:index="index"
-          v-bind:key="collection._id"
-          >
-            <div class="text">
-              <br>
-              <h3> {{ collection.name }} </h3>
-              <div class="card"></div>
-              <br>
-                <button type="button" data-toggle='modal' v-on:click="edit(collection)" data-target="#update_collection" class="btn btn-primary btn-sm">Rename Collection</button>
-                {{" "}}
-                <button type="button" class="btn btn-success btn-sm">Add Items</button>
-                {{" "}}
-                <button type="button" v-on:click="removeCollection(collection._id)" class="btn btn-danger btn-sm">Delete</button>
-                <br><br>
-              </div>
-              <div class="card-footer text-muted">
-                  {{ collection.date }}
-            </div>
-
-            <!-- Modal to update a collection -->
-            <div class="modal fade" id="update_collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel3">Update a collection</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  
-                  <div class="modal-body">
-                    <!-- Collection form -->
-                    <form @submit.prevent="addCollection">
-                      <div class="form-group">
-                        <label for="name">Collection name</label>
-                        <input type="text" v-model="collection.name" class="form-control" id="name" placeholder="Enter your collection's name">
-                      </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button v-on:click="updateCollection()" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
-                        </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        </div>
+      <div class= "table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Add Item</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(collection, index) in collections" 
+              v-bind:item="collection"
+              v-bind:index="index"
+              v-bind:key="collection._id">
+            <td>
+                {{collection.name}}
+            </td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm">Add Items</button>
+            </td>
+            <td>
+              <button type="button" data-toggle='modal' v-on:click="edit(collection)" data-target="#update_collection" class="btn btn-primary btn-sm">Rename Collection</button>
+            </td>
+            <td>
+              <button type="button" v-on:click="removeCollection(collection._id)" class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          </tr>
+        </tbody>
       </div>
     </div>
     
