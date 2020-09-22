@@ -25,56 +25,34 @@
 
     <!-- Show the items created by the user -->
     <div class="container">
-      <div class= "row">
-        <div class = "card border-dark col-md-4 text-center " 
-          v-for="(item, index) in items" 
-          v-bind:item="item"
-          v-bind:index="index"
-          v-bind:key="item._id"
-          >
-            <div class="text">
-              <br>
-              <h3> {{ item.name }} </h3>
-              <div class="card"></div>
-              <br>
-                <button type="button" data-toggle='modal' v-on:click="edit(item)" data-target="#update_item" class="btn btn-primary btn-sm">Rename Item</button>
-                {{" "}}
-                <button type="button" v-on:click="removeItem(item._id)" class="btn btn-danger btn-sm">Delete</button>
-                <br><br>
-              </div>
-              <div class="card-footer text-muted">
-                  {{ item.date }}
-            </div>
-
-            <!-- Modal to update an item -->
-            <div class="modal fade" id="update_item" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel3">Update an Item</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  
-                  <div class="modal-body">
-                    <!-- Item form -->
-                    <form @submit.prevent="addItem">
-                      <div class="form-group">
-                        <label for="name">Item name</label>
-                        <input type="text" v-model="item.name" class="form-control" id="name" placeholder="Enter the item name">
-                      </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button v-on:click="updateItem()" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
-                        </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        </div>
+      <div class= "table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Add Item</th>
+            <th scope="col">Update</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in items" 
+              v-bind:item="item"
+              v-bind:index="index"
+              v-bind:key="item._id">
+            <td>
+                {{item.name}}
+            </td>
+            <td>
+              <button type="button" class="btn btn-success btn-sm">Add Items</button>
+            </td>
+            <td>
+              <button type="button" data-toggle='modal' v-on:click="edit(item)" data-target="#update_item" class="btn btn-primary btn-sm">Rename Collection</button>
+            </td>
+            <td>
+              <button type="button" v-on:click="removeItem(item._id)" class="btn btn-danger btn-sm">Delete</button>
+            </td>
+          </tr>
+        </tbody>
       </div>
     </div>
     
