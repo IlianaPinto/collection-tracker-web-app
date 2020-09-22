@@ -25,13 +25,12 @@
 
     <!-- Show the collections created by the user -->
     <div class="container">
-      <div class= "table table-striped">
+      <table class= "table table-striped">
         <thead>
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Add Item</th>
-            <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+            <th scope="col">My Collections</th>
+            <th scope="col" class="text-right"></th>
+            
           </tr>
         </thead>
         <tbody>
@@ -42,18 +41,15 @@
             <td>
                 {{collection.name}}
             </td>
-            <td>
-              <button type="button" class="btn btn-success btn-sm">Add Items</button>
+            <td class="text-right">
+              <a href='/collections/items' class="badge badge-success">Add Items</a>{{" "}}
+              <a type="button" data-toggle='modal' v-on:click="edit(collection)" data-target="#update_collection" class="badge badge-primary">Edit</a>{{" "}}
+              <a type="button" v-on:click="removeCollection(collection._id)" class="badge badge-danger">Delete</a>
             </td>
-            <td>
-              <button type="button" data-toggle='modal' v-on:click="edit(collection)" data-target="#update_collection" class="btn btn-primary btn-sm">Rename Collection</button>
-            </td>
-            <td>
-              <button type="button" v-on:click="removeCollection(collection._id)" class="btn btn-danger btn-sm">Delete</button>
-            </td>
+            
           </tr>
         </tbody>
-      </div>
+      </table>
     </div>
     
     <!-- Modal to create a new collection -->
