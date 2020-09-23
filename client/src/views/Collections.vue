@@ -84,6 +84,7 @@
 
 <script>
 import Collections from '../services/CollectionService';
+import Items from '../services/ItemService';
 
 export default {
   name: 'Collections',
@@ -100,6 +101,7 @@ export default {
     }
   },
   created(){
+    this.userId = this.$auth.user.email;
     this.getCollections();
   },
   methods: {
@@ -111,9 +113,10 @@ export default {
       this.collection.userId = this.$auth.user.email;
     },
     async getCollections(){
-        this.collections = await Collections.getCollections();
+        this.collections = await Collections.getCollections(this.$auth.user.email);
     },
     async removeCollection(id){
+      this.getItemsandDelete(id);
       await Collections.deleteCollection(id);
       this.getCollections();
     },
@@ -122,8 +125,12 @@ export default {
       this.getCollections();
       this.collection.name = '';
     },
-    edit(data){
-      console.log(data.userID);
+    async getItemsandDelete(id){
+      var items_array = await Items.getItems(id);
+      var i = 0;
+      for(i = 0; i < items_array.length; i++){
+        await Items.deleteItem(items_array[i]._id);
+      }
     },
     isEmpty(){
       return this.collections.length === 0;

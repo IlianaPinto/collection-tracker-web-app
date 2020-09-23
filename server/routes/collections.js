@@ -3,9 +3,9 @@ const router = express.Router();
 
 const Collection = require('../models/Collection');
 
-router.get('/', async (req,res) => {
+router.get('/:userID', async (req,res) => {
     try {
-        const collections = await Collection.find();
+        const collections = await Collection.find(req.params);
         if(!collections) throw new Error('No collection');
         const sorted = collections.sort((a, b) => {
             return new Date(a.date).getTime() - new Date(b.date).getTime();       
@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => { 
     const { id } = req.params;
     console.log(req.body);
     try {

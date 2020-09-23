@@ -4,8 +4,8 @@ const url = 'http://localhost:3000/collections/';
 
 class CollectionService{
     // Get collection
-    static async getCollections(){
-        const res = await axios.get(url)
+    static async getCollections(id){
+        const res = await axios.get(url+id)
         try {
           const data = res.data
           return data.map(collection => ({
