@@ -19,8 +19,12 @@ class ItemService{
     // Create item
     static insertItem(item){
         return axios.post(url, {
-            userID: item.userId,
+            collectionID: item.collectionId,
             name: item.name,
+            value: item.value,
+            year:item.year,
+            condition:item.condition,
+            location: item.location,
         });
     }
 

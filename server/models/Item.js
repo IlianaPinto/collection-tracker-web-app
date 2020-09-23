@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const Item = new Schema({
-    categoryID: {
+    collectionID: {
         type: String,
         required: true,
     },

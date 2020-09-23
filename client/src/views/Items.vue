@@ -8,9 +8,9 @@
             <br>
             <div class="container">
             <h5 class="card-title">
-              <strong>Seems like your collection is empty</strong>
+              <strong>Seems like this collection is empty</strong>
             </h5>
-            <p class="card-text">Create one!</p>
+            <p class="card-text">Add some items!</p>
             <button type='button' class="btn btn-success" data-toggle='modal' data-target="#create_item">Get Started</button>
             <br><br>
           </div>
@@ -22,16 +22,18 @@
       <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_item">Add a new item</button>
       <br><br>
     </div>
-
+    <p>{{$route.params.id}}</p>
     <!-- Show the items created by the user -->
-    <div class="container">
-      <div class= "table table-striped">
+    <div v-if='!isEmpty()' class="container">
+      <table class= "table table-striped">
         <thead>
           <tr>
             <th scope="col">Name</th>
-            <th scope="col">Add Item</th>
-            <th scope="col">Update</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Value</th>
+            <th scope="col">year</th>
+            <th scope="col">Condition</th>
+            <th scope="col">Location</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -39,21 +41,18 @@
               v-bind:item="item"
               v-bind:index="index"
               v-bind:key="item._id">
-            <td>
-                {{item.name}}
-            </td>
-            <td>
-              <button type="button" class="btn btn-success btn-sm">Add Items</button>
-            </td>
-            <td>
-              <button type="button" data-toggle='modal' v-on:click="edit(item)" data-target="#update_item" class="btn btn-primary btn-sm">Rename Collection</button>
-            </td>
-            <td>
-              <button type="button" v-on:click="removeItem(item._id)" class="btn btn-danger btn-sm">Delete</button>
+            <td>{{item.name}}</td>
+            <td>{{item.value}}</td>
+            <td>{{item.year}}</td>
+            <td>{{item.condition}}</td>
+            <td>{{item.location}}</td>
+            <td class="text-right">
+              <a type="button" data-toggle='modal' v-on:click="edit(item)" data-target="#update_item" class="badge badge-primary">Edit</a>{{" "}}
+              <a type="button" v-on:click="removeItem(item._id)" class="badge badge-danger">Delete</a>
             </td>
           </tr>
         </tbody>
-      </div>
+      </table>
     </div>
     
     <!-- Modal to create a new item -->
@@ -103,6 +102,7 @@ export default {
   },
   created(){
     this.getItems();
+    //alert(this.$route.params)
   },
   methods: {
     async addItem(){

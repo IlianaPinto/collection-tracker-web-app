@@ -24,7 +24,7 @@
     </div>
 
     <!-- Show the collections created by the user -->
-    <div class="container">
+    <div v-if="!isEmpty()" class="container">
       <table class= "table table-striped">
         <thead>
           <tr>
@@ -42,11 +42,10 @@
                 {{collection.name}}
             </td>
             <td class="text-right">
-              <a href='/collections/items' class="badge badge-success">Add Items</a>{{" "}}
+              <router-link :to=" {name:'items', params: {id:collection._id,name:collection.name}} " class="badge badge-success">Add Items</router-link>{{" "}}
               <a type="button" data-toggle='modal' v-on:click="edit(collection)" data-target="#update_collection" class="badge badge-primary">Edit</a>{{" "}}
               <a type="button" v-on:click="removeCollection(collection._id)" class="badge badge-danger">Delete</a>
             </td>
-            
           </tr>
         </tbody>
       </table>
@@ -88,6 +87,9 @@ import Collections from '../services/CollectionService';
 
 export default {
   name: 'Collections',
+  components:{
+
+  },
   data(){
     return {
       collections: [],
