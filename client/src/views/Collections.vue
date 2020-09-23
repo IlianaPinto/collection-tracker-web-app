@@ -67,11 +67,11 @@
             <form @submit.prevent="addCollection">
               <div class="form-group">
                 <label for="name">Collection name</label>
-                <input type="text" v-model="collection.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter your collection's name">
+                <input type="text" v-model="collection.name" class="form-control" id="name" placeholder="Enter your collection's name" required>
               </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button v-on:click="addCollection" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
+                  <button  type="submit"  class="btn btn-success">Submit</button>
                 </div>
             </form>
           </div>
@@ -139,3 +139,7 @@ export default {
   
 }
 </script>
+
+<style scoped>
+
+</style>

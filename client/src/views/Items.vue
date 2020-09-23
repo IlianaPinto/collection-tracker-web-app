@@ -70,27 +70,27 @@
             <form @submit.prevent="addItem">
               <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" v-model="item.name" class="form-control" id="name" placeholder="Enter the item name">
+                <input type="text" v-model="item.name" class="form-control" id="name" placeholder="Enter the item name" required>
               </div>
               <div class="form-group">
                 <label for="value">Value</label>
-                <input type="number" v-model="item.value" class="form-control" id="value" placeholder="Enter the item value">
+                <input type="number" v-model="item.value" class="form-control" id="value" placeholder="Enter the item value" required>
               </div>
               <div class="form-group">
                 <label for="year">Year</label>
-                <input type="number" v-model="item.year" class="form-control" id="year"  placeholder="Enter the item year">
+                <input type="number" v-model="item.year" class="form-control" id="year"  placeholder="Enter the item year" required>
               </div>
               <div class="form-group">
                 <label for="condition">Condition</label>
-                <input type="text" v-model="item.condition" class="form-control" id="condition" placeholder="Enter the item condition">
+                <input type="text" v-model="item.condition" class="form-control" id="condition" placeholder="Enter the item condition" required>
               </div>
               <div class="form-group">
                 <label for="location">Location</label>
-                <input type="text" v-model="item.location" class="form-control" id="location" placeholder="Enter the item location">
+                <input type="text" v-model="item.location" class="form-control" id="location" placeholder="Enter the item location" required>
               </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button v-on:click="addItem" type="submit" data-dismiss="modal" class="btn btn-success">Submit</button>
+                  <button type="submit" class="btn btn-success">Submit</button>
                 </div>
             </form>
           </div>
