@@ -3,9 +3,9 @@ const router = express.Router();
 
 const Item = require('../models/Item');
 
-router.get('/', async (req,res) => {
+router.get('/:collectionID', async (req,res) => {
     try {
-        const items = await Item.find(req.params.collectionID);
+        const items = await Item.find(req.params);
         if(!items) throw new Error('No item');
         const sorted = items.sort((a, b) => {
             return new Date(a.date).getTime() - new Date(b.date).getTime();       

@@ -70,8 +70,24 @@
             <!-- Item form -->
             <form @submit.prevent="addItem">
               <div class="form-group">
-                <label for="name">Item name</label>
-                <input type="text" v-model="item.name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter the item name">
+                <label for="name">Name</label>
+                <input type="text" v-model="item.name" class="form-control" id="name" placeholder="Enter the item name">
+              </div>
+              <div class="form-group">
+                <label for="value">Value</label>
+                <input type="number" v-model="item.value" class="form-control" id="value" placeholder="Enter the item value">
+              </div>
+              <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" v-model="item.year" class="form-control" id="year"  placeholder="Enter the item year">
+              </div>
+              <div class="form-group">
+                <label for="condition">Condition</label>
+                <input type="text" v-model="item.condition" class="form-control" id="condition" placeholder="Enter the item condition">
+              </div>
+              <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" v-model="item.location" class="form-control" id="location" placeholder="Enter the item location">
               </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
