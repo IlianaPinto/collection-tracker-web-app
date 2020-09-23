@@ -1,19 +1,23 @@
 <template>
   <div class = "home">
-    <!--<Carousel />-->
-    <p>Home view</p>
-    <br><br>
-    
+    <div class="jumbotron jumbotron-fluid ">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <h1 class="display-4">Collector Tracker</h1>
+            <p class="lead">Keep track of your collections with us!</p>
+          </div>
+          <div class=col>
+            <img src="../assets/alien.png" alt="alien">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  //import Carousel from '../components/Carousel.vue'
-
   export default {
     name: 'Home',
-    components: {
-      //Carousel
-    }
   }
 </script>
