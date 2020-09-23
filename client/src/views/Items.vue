@@ -22,7 +22,6 @@
       <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_item">Add a new item</button>
       <br><br>
     </div>
-    <p>{{$route.params.id}}</p>
     <!-- Show the items created by the user -->
     <div v-if='!isEmpty()' class="container">
       <table class= "table table-striped">
@@ -113,21 +112,30 @@ export default {
       item:{
         collectionId: '',
         name: '',
+        value: '',
+        year:'',
+        condition:'',
+        location: '',
       },
     }
   },
   created(){
     this.getItems();
-    //alert(this.$route.params)
   },
   methods: {
     async addItem(){
+      this.item.collectionId = this.$route.params.id;
       await Items.insertItem(this.item);
       this.getItems();
+      this.item.collectionId = '';
       this.item.name = '';
+      this.item.value = '';
+      this.item.year = '';
+      this.item.condition = '';
+      this.item.location = '';
     },
     async getItems(){
-        this.items = await Items.getItems();
+        this.items = await Items.getItems(this.$route.params.id); 
     },
     async removeItem(id){
       await Items.deleteItem(id);

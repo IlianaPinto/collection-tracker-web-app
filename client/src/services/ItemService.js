@@ -4,8 +4,8 @@ const url = 'http://localhost:3000/items/';
 
 class ItemService{
     // Get item
-    static async getItems(){
-        const res = await axios.get(url)
+    static async getItems(id){
+        const res = await axios.get(url+id)
         try {
           const data = res.data
           return data.map(item => ({
