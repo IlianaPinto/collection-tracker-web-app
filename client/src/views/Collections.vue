@@ -1,83 +1,112 @@
 <template>
   <div class="collections">
     <br><br>
-    <!-- Check if there is a collection -->
-    <div v-if='isEmpty()'>
-      <div class="container">
-          <div class="card text-center border-dark mb-3" >
-            <br>
-            <div class="container">
-            <h5 class="card-title">
-              <strong>Seems like your collection is empty</strong>
-            </h5>
-            <p class="card-text">Create one!</p>
-            <button type='button' class="btn btn-success" data-toggle='modal' data-target="#create_collection">Get Started</button>
-            <br><br>
-          </div>
-        </div> 
-      </div>
-    </div>
     
-    <div v-if='!isEmpty()' class='container'>
-      <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_collection">Add a new collection</button>
+    <div class = "container">
+      <br><br>
+      <div class="row">
+
+          <!-- Show user profile -->
+          <div class="col-3 text-center">
+              <img :src="$auth.user.picture" alt="Profile Picture">
+              <br><br>
+              <p>{{$auth.user.nickname}}</p>
+              <p>{{$auth.user.email}}</p>
+              <br>
+              <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_collection">Add a new collection</button>
+          </div>
+
+          <div class="col">
+            <!-- Show the collections created by the user -->
+            <div class="container">
+              <table class= "table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">My Collections</th>
+                    <th scope="col" class="text-right"></th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(collection, index) in collections" 
+                      v-bind:item="collection"
+                      v-bind:index="index"
+                      v-bind:key="collection._id">
+                    <td>
+                        {{collection.name}}
+                    </td>
+                    <td class="text-right">
+                      <router-link :to=" {name:'items', params: {id:collection._id,name:collection.name}} " class="badge badge-success">Add Items</router-link>{{" "}}
+                      <a type="button" class="badge badge-primary" data-toggle='modal' data-target="#update_collection">Edit</a>{{" "}}
+                      <a type="button" v-on:click="removeCollection(collection._id)" class="badge badge-danger">Delete</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Modal to create a new collection -->
+            <div class="modal fade" id="create_collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create a collection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  
+                  <div class="modal-body">
+                    <!-- Collection form -->
+                    <form @submit.prevent="addCollection">
+                      <div class="form-group">
+                        <label for="name">Collection name</label>
+                        <input type="text" v-model="collection.name" class="form-control" id="name" placeholder="Enter your collection's name" required>
+                      </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button  type="submit"  class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal to update a new collection -->
+            <div class="modal fade" id="update_collection" tabindex="-1" role="dialog" aria-labelledby="ModalLabel2" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel2">Update a collection</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  
+                  <div class="modal-body">
+                    <!-- Collection form -->
+                    <form @submit.prevent="updateCollection">
+                      <div class="form-group">
+                        <label for="name">Collection name</label>
+                        <input type="text" v-model="collection.name" class="form-control" id="name" placeholder="Enter your collection's name" required>
+                      </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button  type="submit"  class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
       <br><br>
     </div>
+    <br><br>
 
-    <!-- Show the collections created by the user -->
-    <div v-if="!isEmpty()" class="container">
-      <table class= "table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">My Collections</th>
-            <th scope="col" class="text-right"></th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(collection, index) in collections" 
-              v-bind:item="collection"
-              v-bind:index="index"
-              v-bind:key="collection._id">
-            <td>
-                {{collection.name}}
-            </td>
-            <td class="text-right">
-              <router-link :to=" {name:'items', params: {id:collection._id,name:collection.name}} " class="badge badge-success">Add Items</router-link>{{" "}}
-              <a type="button" data-toggle='modal' v-on:click="edit(collection)" data-target="#update_collection" class="badge badge-primary">Edit</a>{{" "}}
-              <a type="button" v-on:click="removeCollection(collection._id)" class="badge badge-danger">Delete</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
     
-    <!-- Modal to create a new collection -->
-    <div class="modal fade" id="create_collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Create a collection</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          
-          <div class="modal-body">
-            <!-- Collection form -->
-            <form @submit.prevent="addCollection">
-              <div class="form-group">
-                <label for="name">Collection name</label>
-                <input type="text" v-model="collection.name" class="form-control" id="name" placeholder="Enter your collection's name" required>
-              </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button  type="submit"  class="btn btn-success">Submit</button>
-                </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
 
   </div>
 </template>
@@ -89,7 +118,7 @@ import Items from '../services/ItemService';
 export default {
   name: 'Collections',
   components:{
-
+    
   },
   data(){
     return {
@@ -100,8 +129,8 @@ export default {
       },
     }
   },
-  created(){
-    this.userId = this.$auth.user.email;
+  async created(){
+    this.userId = await this.$auth.user.email;
     this.getCollections();
   },
   methods: {
@@ -132,14 +161,7 @@ export default {
         await Items.deleteItem(items_array[i]._id);
       }
     },
-    isEmpty(){
-      return this.collections.length === 0;
-    }
   },
   
 }
 </script>
-
-<style scoped>
-
-</style>

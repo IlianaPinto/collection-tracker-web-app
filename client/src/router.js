@@ -19,7 +19,7 @@ const router = new Router({
             beforeEnter: authGuard
         },
         {
-            path: '/collections/items/:name',
+            path: '/collections/items/:name/:id',
             name: 'items',
             component: () => import('./views/Items.vue'),
             beforeEnter: authGuard

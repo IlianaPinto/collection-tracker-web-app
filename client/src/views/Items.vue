@@ -1,29 +1,10 @@
 <template>
   <div class="collections">
     <br><br>
-    <!-- Check if there is an item -->
-    <div v-if='isEmpty()'>
-      <div class="container">
-          <div class="card text-center border-dark mb-3" >
-            <br>
-            <div class="container">
-            <h5 class="card-title">
-              <strong>Seems like this collection is empty</strong>
-            </h5>
-            <p class="card-text">Add some items!</p>
-            <button type='button' class="btn btn-success" data-toggle='modal' data-target="#create_item">Get Started</button>
-            <br><br>
-          </div>
-        </div> 
-      </div>
-    </div>
-
-    <div v-if='!isEmpty()' class='container'>
+    <!-- Show the items created by the user -->
+    <div v-if='isEmpty()' class="container">
       <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_item">Add a new item</button>
       <br><br>
-    </div>
-    <!-- Show the items created by the user -->
-    <div v-if='!isEmpty()' class="container">
       <table class= "table table-striped">
         <thead>
           <tr>
@@ -52,6 +33,23 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Check if there is an item -->
+    <div v-else>
+      <div class="container">
+          <div class="card text-center border-dark mb-3" >
+            <br>
+            <div class="container">
+            <h5 class="card-title">
+              <strong>Seems like this collection is empty</strong>
+            </h5>
+            <p class="card-text">Add some items!</p>
+            <button type='button' class="btn btn-success" data-toggle='modal' data-target="#create_item">Get Started</button>
+            <br><br>
+          </div>
+        </div> 
+      </div>
     </div>
     
     <!-- Modal to create a new item -->
@@ -117,14 +115,16 @@ export default {
         condition:'',
         location: '',
       },
+      routeId: ''
     }
   },
-  created(){
+  async created(){
+    this.routeId = await this.$route.params.id;
     this.getItems();
   },
   methods: {
     async addItem(){
-      this.item.collectionId = this.$route.params.id;
+      this.item.collectionId = await this.routeId;
       await Items.insertItem(this.item);
       this.getItems();
       this.item.collectionId = '';
@@ -135,7 +135,7 @@ export default {
       this.item.location = '';
     },
     async getItems(){
-        this.items = await Items.getItems(this.$route.params.id); 
+        this.items = await Items.getItems(this.routeId); 
     },
     async removeItem(id){
       await Items.deleteItem(id);
@@ -150,7 +150,7 @@ export default {
       console.log(data.userID);
     },
     isEmpty(){
-      return this.items.length === 0;
+      return this.items.length !== 0;
     }
   },
   
