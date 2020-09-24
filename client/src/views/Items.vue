@@ -27,7 +27,7 @@
             <td>{{item.condition}}</td>
             <td>{{item.location}}</td>
             <td class="text-right">
-              <a type="button" data-toggle='modal' v-on:click="edit(item)" data-target="#update_item" class="badge badge-primary">Edit</a>{{" "}}
+              <a type="button" data-toggle='modal' v-on:click="editItem(item)" data-target="#update_item" class="badge badge-primary">Edit</a>{{" "}}
               <a type="button" v-on:click="removeItem(item._id)" class="badge badge-danger">Delete</a>
             </td>
           </tr>
@@ -96,6 +96,50 @@
       </div>
     </div>
 
+    <!-- Modal to update an item -->
+    <div class="modal fade" id="update_item" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalLabel">Update an item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body">
+            <!-- Item form -->
+            <form @submit.prevent="updateItem">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" v-model="item.name" class="form-control" id="name" placeholder="Enter the item name" required>
+              </div>
+              <div class="form-group">
+                <label for="value">Value</label>
+                <input type="number" v-model="item.value" class="form-control" id="value" placeholder="Enter the item value" required>
+              </div>
+              <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" v-model="item.year" class="form-control" id="year"  placeholder="Enter the item year" required>
+              </div>
+              <div class="form-group">
+                <label for="condition">Condition</label>
+                <input type="text" v-model="item.condition" class="form-control" id="condition" placeholder="Enter the item condition" required>
+              </div>
+              <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" v-model="item.location" class="form-control" id="location" placeholder="Enter the item location" required>
+              </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" v-on:click="updateItem" data-dismiss="modal" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -142,12 +186,11 @@ export default {
       this.getItems();
     },
      async updateItem(){
-      await Items.updateItem();
+      await Items.updateItem(this.item._id,this.item);
       this.getItems();
-      this.item.name = '';
     },
-    edit(data){
-      console.log(data.userID);
+    editItem(item){
+      this.item = item;
     },
     isEmpty(){
       return this.items.length !== 0;

@@ -150,7 +150,6 @@ export default {
       this.getCollections();
     },
     async updateCollection(){
-      console.log(this.collection)
       await Collections.updateCollection(this.collection._id,this.collection);
       this.getCollections();
     },
