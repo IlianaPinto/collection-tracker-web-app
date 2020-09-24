@@ -17,7 +17,7 @@
         </div> 
       </div>
     </div>
-
+    
     <div v-if='!isEmpty()' class='container'>
       <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_collection">Add a new collection</button>
       <br><br>

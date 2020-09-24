@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { authGuard } from "./auth/authGuard";
 
 Vue.use(Router);
-
-export default new Router({
+const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
@@ -15,12 +15,16 @@ export default new Router({
         {
             path: '/collections',
             name: 'collections',
-            component: () => import('./views/Collections.vue')
+            component: () => import('./views/Collections.vue'),
+            beforeEnter: authGuard
         },
         {
             path: '/collections/items/:name',
             name: 'items',
-            component: () => import('./views/Items.vue')
+            component: () => import('./views/Items.vue'),
+            beforeEnter: authGuard
         }
     ]
-})
+});
+
+export default router;
