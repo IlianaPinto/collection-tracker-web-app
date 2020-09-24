@@ -31,7 +31,7 @@ class CollectionService{
 
     // Update collection
     static updateCollection(id,data){
-        return axios.put(url+id,data);
+      return axios.put(url+id,data);
     }
 }
 

@@ -37,7 +37,7 @@
                     </td>
                     <td class="text-right">
                       <router-link :to=" {name:'items', params: {id:collection._id,name:collection.name}} " class="badge badge-success">Add Items</router-link>{{" "}}
-                      <a type="button" class="badge badge-primary" data-toggle='modal' data-target="#update_collection">Edit</a>{{" "}}
+                      <a type="button" class="badge badge-primary" v-on:click="editCollection(collection)" data-toggle='modal' data-target="#update_collection">Edit</a>{{" "}}
                       <a type="button" v-on:click="removeCollection(collection._id)" class="badge badge-danger">Delete</a>
                     </td>
                   </tr>
@@ -93,7 +93,7 @@
                       </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button  type="submit"  class="btn btn-success">Submit</button>
+                          <button  type="submit" v-on:click="updateCollection" data-dismiss="modal" class="btn btn-success">Submit</button>
                         </div>
                     </form>
                   </div>
@@ -149,10 +149,10 @@ export default {
       await Collections.deleteCollection(id);
       this.getCollections();
     },
-     async updateCollection(){
-      await Collections.updateCollection(this.collection.userId,this.collection);
+    async updateCollection(){
+      console.log(this.collection)
+      await Collections.updateCollection(this.collection._id,this.collection);
       this.getCollections();
-      this.collection.name = '';
     },
     async getItemsandDelete(id){
       var items_array = await Items.getItems(id);
@@ -161,6 +161,9 @@ export default {
         await Items.deleteItem(items_array[i]._id);
       }
     },
+    editCollection(collection){
+      this.collection = collection
+    }
   },
   
 }

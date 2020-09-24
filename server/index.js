@@ -16,6 +16,8 @@ mongoose.connect('mongodb+srv://Jarvis:jarvis@cluster0.ffvol.mongodb.net/Collect
 })
 ;
 
+mongoose.set('useFindAndModify', false);
+
 // Settings
 app.set('port', process.env.PORT || 3000);
 

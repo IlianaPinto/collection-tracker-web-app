@@ -30,9 +30,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => { 
     const { id } = req.params;
-    console.log(req.body);
     try {
-        const response = await Collection.findOneAndUpdate(id, req.body);
+        var response = await Collection.findByIdAndUpdate(id,req.body);
         if (!response) throw Error('Something went wrong while updating');
         const update = { ...response._doc, ...req.body }
         res.status(200).json(update);
