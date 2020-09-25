@@ -1,10 +1,13 @@
 <template>
   <div class="collections">
     <br><br>
+
     <!-- Show the items created by the user -->
     <div v-if='isEmpty()' class="container">
-      <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_item">Add a new item</button>
+      <button type="button" v-on:click="clean" class="btn btn-success" data-toggle='modal' data-target="#create_item">Add a new item</button>
       <br><br>
+      <!-- Search bar -->
+      <input v-model="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" > 
       <table class= "table table-striped">
         <thead>
           <tr>
@@ -17,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in items" 
+          <tr v-for="(item, index) in filteritem" 
               v-bind:item="item"
               v-bind:index="index"
               v-bind:key="item._id">
@@ -112,26 +115,26 @@
             <form @submit.prevent="updateItem">
               <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" v-model="item.name" class="form-control" id="name" placeholder="Enter the item name" required>
+                <input type="text" v-model="item.name" class="form-control" id="name2" placeholder="Enter the item name" required>
               </div>
               <div class="form-group">
                 <label for="value">Value</label>
-                <input type="number" v-model="item.value" class="form-control" id="value" placeholder="Enter the item value" required>
+                <input type="number" v-model="item.value" class="form-control" id="value2" placeholder="Enter the item value" required>
               </div>
               <div class="form-group">
                 <label for="year">Year</label>
-                <input type="number" v-model="item.year" class="form-control" id="year"  placeholder="Enter the item year" required>
+                <input type="number" v-model="item.year" class="form-control" id="year2"  placeholder="Enter the item year" required>
               </div>
               <div class="form-group">
                 <label for="condition">Condition</label>
-                <input type="text" v-model="item.condition" class="form-control" id="condition" placeholder="Enter the item condition" required>
+                <input type="text" v-model="item.condition" class="form-control" id="condition2" placeholder="Enter the item condition" required>
               </div>
               <div class="form-group">
                 <label for="location">Location</label>
-                <input type="text" v-model="item.location" class="form-control" id="location" placeholder="Enter the item location" required>
+                <input type="text" v-model="item.location" class="form-control" id="location2" placeholder="Enter the item location" required>
               </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" v-on:click="getItems" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   <button type="submit" v-on:click="updateItem" data-dismiss="modal" class="btn btn-success">Submit</button>
                 </div>
             </form>
@@ -159,7 +162,15 @@ export default {
         condition:'',
         location: '',
       },
-      routeId: ''
+      routeId: '',
+      search:''
+    }
+  },
+  computed:{
+    filteritem: function(){
+      return this.items.filter((item) => {
+        return item.name.toLocaleUpperCase().match(this.search.toLocaleUpperCase());
+      });
     }
   },
   async created(){
@@ -188,9 +199,24 @@ export default {
      async updateItem(){
       await Items.updateItem(this.item._id,this.item);
       this.getItems();
+      this.item.collectionId = '';
+      this.item.name = '';
+      this.item.value = '';
+      this.item.year = '';
+      this.item.condition = '';
+      this.item.location = '';
     },
     editItem(item){
       this.item = item;
+      this.getItems();
+    },
+    clean(){
+      this.item.collectionId = '';
+      this.item.name = '';
+      this.item.value = '';
+      this.item.year = '';
+      this.item.condition = '';
+      this.item.location = '';
     },
     isEmpty(){
       return this.items.length !== 0;

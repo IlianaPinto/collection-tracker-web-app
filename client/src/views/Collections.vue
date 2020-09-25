@@ -3,9 +3,17 @@
     <br><br>
     
     <div class = "container">
-      <br><br>
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-1"></div>
+          <div class="col-1"></div>
+          <div class="col-9">
+            <!-- Search bar -->
+            <input v-model="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" >
+          </div>
+        </div>
+        
       <div class="row">
-
           <!-- Show user profile -->
           <div class="col-3 text-center">
               <img :src="$auth.user.picture" alt="Profile Picture">
@@ -13,7 +21,7 @@
               <p>{{$auth.user.nickname}}</p>
               <p>{{$auth.user.email}}</p>
               <br>
-              <button type="button" class="btn btn-success" data-toggle='modal' data-target="#create_collection">Add a new collection</button>
+              <button type="button" v-on:click="clean" class="btn btn-success" data-toggle='modal' data-target="#create_collection">Add a new collection</button>
           </div>
 
           <div class="col">
@@ -28,7 +36,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(collection, index) in collections" 
+                  <tr v-for="(collection, index) in filtercollection" 
                       v-bind:item="collection"
                       v-bind:index="index"
                       v-bind:key="collection._id">
@@ -89,10 +97,10 @@
                     <form @submit.prevent="updateCollection">
                       <div class="form-group">
                         <label for="name">Collection name</label>
-                        <input type="text" v-model="collection.name" class="form-control" id="name" placeholder="Enter your collection's name" required>
+                        <input type="text" v-model="collection.name" class="form-control" id="name2" placeholder="Enter your collection's name" required>
                       </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" v-on:click="getCollections" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           <button  type="submit" v-on:click="updateCollection" data-dismiss="modal" class="btn btn-success">Submit</button>
                         </div>
                     </form>
@@ -120,6 +128,13 @@ export default {
   components:{
     
   },
+  computed:{
+    filtercollection: function(){
+      return this.collections.filter((collection) => {
+        return collection.name.toLocaleUpperCase().match(this.search.toLocaleUpperCase());
+      });
+    }
+  },
   data(){
     return {
       collections: [],
@@ -127,6 +142,7 @@ export default {
         userId: '',
         name: '',
       },
+      search: ''
     }
   },
   async created(){
@@ -152,6 +168,7 @@ export default {
     async updateCollection(){
       await Collections.updateCollection(this.collection._id,this.collection);
       this.getCollections();
+      this.collection.name = '';
     },
     async getItemsandDelete(id){
       var items_array = await Items.getItems(id);
@@ -162,6 +179,10 @@ export default {
     },
     editCollection(collection){
       this.collection = collection
+    },
+    clean(){
+      this.collection.name = '';
+      this.getCollections();
     }
   },
   
