@@ -31,7 +31,7 @@
             <td>{{item.location}}</td>
             <td class="text-right">
               <a type="button" data-toggle='modal' v-on:click="editItem(item)" data-target="#update_item" class="badge badge-primary">Edit</a>{{" "}}
-              <a type="button" v-on:click="removeItem(item._id)" class="badge badge-danger">Delete</a>
+              <a type="button" v-on:click="deleteItem(item._id)" data-target="#delete_item" data-toggle='modal' class="badge badge-danger">Delete</a>
             </td>
           </tr>
         </tbody>
@@ -83,7 +83,12 @@
               </div>
               <div class="form-group">
                 <label for="condition">Condition</label>
-                <input type="text" v-model="item.condition" class="form-control" id="condition" placeholder="Enter the item condition" required>
+                <select class="form-control" id="condition" v-model='item.condition' required >
+                  <option disabled value="">Select option</option>
+                  <option>Bad</option>
+                  <option>Good</option>
+                  <option>Excellent</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="location">Location</label>
@@ -127,7 +132,12 @@
               </div>
               <div class="form-group">
                 <label for="condition">Condition</label>
-                <input type="text" v-model="item.condition" class="form-control" id="condition2" placeholder="Enter the item condition" required>
+                <select class="form-control" id="condition2" v-model='item.condition' required >
+                  <option disabled value="">Select option</option>
+                  <option>Bad</option>
+                  <option>Good</option>
+                  <option>Excellent</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="location">Location</label>
@@ -138,6 +148,28 @@
                   <button type="submit" v-on:click="updateItem" data-dismiss="modal" class="btn btn-success">Submit</button>
                 </div>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal to delete -->
+    <div class="modal fade" id="delete_item" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h4 class="text-center">Are you sure you want to delete this item?</h4>
+            <p></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-danger" v-on:click="removeItem" data-dismiss="modal">Yes</button>
           </div>
         </div>
       </div>
@@ -163,7 +195,8 @@ export default {
         location: '',
       },
       routeId: '',
-      search:''
+      search:'',
+      id: ''
     }
   },
   computed:{
@@ -192,8 +225,8 @@ export default {
     async getItems(){
         this.items = await Items.getItems(this.routeId); 
     },
-    async removeItem(id){
-      await Items.deleteItem(id);
+    async removeItem(){
+      await Items.deleteItem(this.id);
       this.getItems();
     },
      async updateItem(){
@@ -209,6 +242,9 @@ export default {
     editItem(item){
       this.item = item;
       this.getItems();
+    },
+    deleteItem(id){
+      this.id = id;
     },
     clean(){
       this.item.collectionId = '';

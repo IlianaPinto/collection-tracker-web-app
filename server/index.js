@@ -3,8 +3,10 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 var cors = require('cors');
 
+require('dotenv').config();
+
 const app = express();
-mongoose.connect('mongodb+srv://Jarvis:jarvis@cluster0.ffvol.mongodb.net/Collection_Tracker?retryWrites=true&w=majority',{
+mongoose.connect(process.env.MONGOLAB_URI,{ 
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })

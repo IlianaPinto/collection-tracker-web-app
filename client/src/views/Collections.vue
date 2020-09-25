@@ -3,16 +3,6 @@
     <br><br>
     
     <div class = "container">
-        <div class="row">
-          <div class="col-1"></div>
-          <div class="col-1"></div>
-          <div class="col-1"></div>
-          <div class="col-9">
-            <!-- Search bar -->
-            <input v-model="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" >
-          </div>
-        </div>
-        
       <div class="row">
           <!-- Show user profile -->
           <div class="col-3 text-center">
@@ -25,6 +15,9 @@
           </div>
 
           <div class="col">
+            <!-- Search bar -->
+            <input v-model="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Search" >
+
             <!-- Show the collections created by the user -->
             <div class="container">
               <table class= "table table-striped">
@@ -46,7 +39,7 @@
                     <td class="text-right">
                       <router-link :to=" {name:'items', params: {id:collection._id,name:collection.name}} " class="badge badge-success">Add Items</router-link>{{" "}}
                       <a type="button" class="badge badge-primary" v-on:click="editCollection(collection)" data-toggle='modal' data-target="#update_collection">Edit</a>{{" "}}
-                      <a type="button" v-on:click="removeCollection(collection._id)" class="badge badge-danger">Delete</a>
+                      <a type="button" v-on:click="deleteCollection(collection._id)" class="badge badge-danger" data-toggle='modal' data-target="#delete_collection">Delete</a>
                     </td>
                   </tr>
                 </tbody>
@@ -108,6 +101,29 @@
                 </div>
               </div>
             </div>
+
+            <!-- Modal to delete -->
+            <div class="modal fade" id="delete_collection" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <h4 class="text-center">Are you sure you want to delete this Collection?</h4>
+                    <p></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" v-on:click="removeCollection" data-dismiss="modal">Yes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
       </div>
       <br><br>
@@ -142,7 +158,8 @@ export default {
         userId: '',
         name: '',
       },
-      search: ''
+      search: '',
+      id: ''
     }
   },
   async created(){
@@ -160,9 +177,9 @@ export default {
     async getCollections(){
         this.collections = await Collections.getCollections(this.$auth.user.email);
     },
-    async removeCollection(id){
-      this.getItemsandDelete(id);
-      await Collections.deleteCollection(id);
+    async removeCollection(){
+      this.getItemsandDelete(this.id);
+      await Collections.deleteCollection(this.id);
       this.getCollections();
     },
     async updateCollection(){
@@ -179,6 +196,9 @@ export default {
     },
     editCollection(collection){
       this.collection = collection
+    },
+    deleteCollection(id){
+      this.id = id;
     },
     clean(){
       this.collection.name = '';
