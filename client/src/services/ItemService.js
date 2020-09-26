@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3000/api/items/';
+const url = '/api/items/';
 
 class ItemService{
     // Get item

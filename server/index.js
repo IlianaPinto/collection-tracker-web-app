@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 var cors = require('cors');
+var path = require('path');
 
 require('dotenv').config();
 
@@ -29,8 +30,15 @@ app.use(express.json());
 app.use(cors());
 
 //Routes
-app.use('/items',require('./routes/items'));
-app.use('/collections', require('./routes/collections'));
+app.use('/api/items',require('./routes/items'));
+app.use('/api/collections', require('./routes/collections'));
+
+if (process.env.NODE_ENV === 'production'){
+    //static folder
+    app.use(express.static(__dirname + /public/));
+
+    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+}
 
 // Static files
 app.use(express.static(__dirname+'/public'));
