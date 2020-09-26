@@ -33,15 +33,9 @@ app.use(cors());
 app.use('/api/items',require('./routes/items'));
 app.use('/api/collections', require('./routes/collections'));
 
-if (process.env.NODE_ENV === 'production'){
-    //static folder
-    app.use(express.static(__dirname + /public/));
-
-    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-}
-
-// Static files
-app.use(express.static(__dirname+'/public'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'));
+})
 
 // Server is listening
 app.listen(app.get('port'), () => {
