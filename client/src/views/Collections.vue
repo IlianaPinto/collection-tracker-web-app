@@ -167,6 +167,7 @@ export default {
     this.getCollections();
   },
   methods: {
+    // Create a new collection
     async addCollection(){
       this.collection.userId = this.$auth.user.email;
       await Collections.insertCollection((this.collection));
@@ -174,19 +175,23 @@ export default {
       this.collection.name = '';
       this.collection.userId = this.$auth.user.email;
     },
+    // Get the collections of the user from DB
     async getCollections(){
         this.collections = await Collections.getCollections(this.$auth.user.email);
     },
+    // Delete a specific collection
     async removeCollection(){
       this.getItemsandDelete(this.id);
       await Collections.deleteCollection(this.id);
       this.getCollections();
     },
+    // Update a collection
     async updateCollection(){
       await Collections.updateCollection(this.collection._id,this.collection);
       this.getCollections();
       this.collection.name = '';
     },
+    // Delete items of a specific collection
     async getItemsandDelete(id){
       var items_array = await Items.getItems(id);
       var i = 0;
@@ -194,12 +199,15 @@ export default {
         await Items.deleteItem(items_array[i]._id);
       }
     },
+    // Set the inputs with a specific collection
     editCollection(collection){
       this.collection = collection
     },
+    // Grab the id to delete a specific collection
     deleteCollection(id){
       this.id = id;
     },
+    // Cleans the input
     clean(){
       this.collection.name = '';
       this.getCollections();

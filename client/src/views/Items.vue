@@ -199,6 +199,7 @@ export default {
       id: ''
     }
   },
+  // Search a specific item
   computed:{
     filteritem: function(){
       return this.items.filter((item) => {
@@ -211,6 +212,7 @@ export default {
     this.getItems();
   },
   methods: {
+    // Create a new item
     async addItem(){
       this.item.collectionId = await this.routeId;
       await Items.insertItem(this.item);
@@ -222,13 +224,16 @@ export default {
       this.item.condition = '';
       this.item.location = '';
     },
+    // Get's the items from the DB
     async getItems(){
         this.items = await Items.getItems(this.routeId); 
     },
+    // Delete a specific item
     async removeItem(){
       await Items.deleteItem(this.id);
       this.getItems();
     },
+    // Modify a specific item
      async updateItem(){
       await Items.updateItem(this.item._id,this.item);
       this.getItems();
@@ -239,13 +244,16 @@ export default {
       this.item.condition = '';
       this.item.location = '';
     },
+    // Set an item in the inputs
     editItem(item){
       this.item = item;
       this.getItems();
     },
+    // Get the id of a specific item
     deleteItem(id){
       this.id = id;
     },
+    // Clean the inputs
     clean(){
       this.item.collectionId = '';
       this.item.name = '';
@@ -254,6 +262,7 @@ export default {
       this.item.condition = '';
       this.item.location = '';
     },
+    // Check if there are items added
     isEmpty(){
       return this.items.length !== 0;
     }
