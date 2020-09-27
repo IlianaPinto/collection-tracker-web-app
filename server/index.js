@@ -34,14 +34,8 @@ app.use(cors());
 app.use('/items',require('./routes/items'));
 app.use('/collections', require('./routes/collections'));
 
-//app.get('/.*/', (req, res) => {
- //   res.sendFile(path.join(__dirname, '/public/index.html'));
-//})
-
-//if(process.env.NODE_ENV === 'production'){
-    app.use(express.static(__dirname+'/public'));
-    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-//}
+app.use(express.static(__dirname+'/public'));
+app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
 
 // Server is listening
 app.listen(app.get('port'), () => {
