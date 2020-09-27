@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-var cors = require('cors');
+//var cors = require('cors');
 var path = require('path');
 
 require('dotenv').config();
@@ -27,7 +27,7 @@ app.set('port', process.env.PORT || 3000);
 // Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
 
 //Routes
 app.use('/api/items',require('./routes/items'));

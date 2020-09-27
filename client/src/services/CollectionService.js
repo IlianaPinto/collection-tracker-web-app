@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = '/api/collections/';
+const url = '/collections/';
 
 class CollectionService{
     // Get collection
