@@ -37,7 +37,7 @@
                         {{collection.name}}
                     </td>
                     <td class="text-right">
-                      <router-link :to=" {name:'items', params: {id:collection._id,name:collection.name}} " class="badge badge-success">Add Items</router-link>{{" "}}
+                      <router-link :to=" {name:'items', params: {id:collection._id}} " class="badge badge-success">Add Items</router-link>{{" "}}
                       <a type="button" class="badge badge-primary" v-on:click="editCollection(collection)" data-toggle='modal' data-target="#update_collection">Edit</a>{{" "}}
                       <a type="button" v-on:click="deleteCollection(collection._id)" class="badge badge-danger" data-toggle='modal' data-target="#delete_collection">Delete</a>
                     </td>

@@ -4,7 +4,7 @@ const { env } = require('process');
 module.exports = {
     outputDir: path.resolve(__dirname,'../server/public'),
     devServer:{
-        proxy: 'http://localhost:3000/api/'
+        proxy: 'http://localhost:3000/'
         
     }
 };

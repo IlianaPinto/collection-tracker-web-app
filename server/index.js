@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-//var cors = require('cors');
+var cors = require('cors');
 var path = require('path');
 
 require('dotenv').config();
@@ -27,16 +27,21 @@ app.set('port', process.env.PORT || 3000);
 // Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
-//app.use(cors());
+
+app.use(cors());
 
 //Routes
-app.use('/api/items',require('./routes/items'));
-app.use('/api/collections', require('./routes/collections'));
+app.use('/items',require('./routes/items'));
+app.use('/collections', require('./routes/collections'));
 
-if(process.env.NODE_ENV === 'production'){
+//app.get('/.*/', (req, res) => {
+ //   res.sendFile(path.join(__dirname, '/public/index.html'));
+//})
+
+//if(process.env.NODE_ENV === 'production'){
     app.use(express.static(__dirname+'/public'));
     app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
-}
+//}
 
 // Server is listening
 app.listen(app.get('port'), () => {
