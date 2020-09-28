@@ -75,11 +75,13 @@
               </div>
               <div class="form-group">
                 <label for="value">Value</label>
-                <input type="number" v-model="item.value" class="form-control" id="value" placeholder="Enter the item value" required>
+                <input type="number" v-model="item.value" v-model.trim="$v.value.$model" class="form-control" id="value" placeholder="Enter the item value" :class="{ 'is-invalid': $v.value.$error}" required>
+                <div class="invalid-feedback">The value must be positive.</div>
               </div>
               <div class="form-group">
                 <label for="year">Year</label>
-                <input type="number" v-model="item.year" class="form-control" id="year"  placeholder="Enter the item year" required>
+                <input type="number" v-model="item.year" v-model.trim="$v.year.$model" class="form-control" id="year"  placeholder="Enter the item year" :class="{ 'is-invalid': $v.year.$error}" required>
+                <div class="invalid-feedback">Invalid year.</div>
               </div>
               <div class="form-group">
                 <label for="condition">Condition</label>
@@ -124,11 +126,13 @@
               </div>
               <div class="form-group">
                 <label for="value">Value</label>
-                <input type="number" v-model="item.value" class="form-control" id="value2" placeholder="Enter the item value" required>
+                <input type="number" v-model="item.value" v-model.trim="$v.value.$model" :class="{ 'is-invalid': $v.value.$error}" class="form-control" id="value2" placeholder="Enter the item value" required>
+                <div class="invalid-feedback">The value must be positive.</div>
               </div>
               <div class="form-group">
                 <label for="year">Year</label>
-                <input type="number" v-model="item.year" class="form-control" id="year2"  placeholder="Enter the item year" required>
+                <input type="number" v-model="item.year" v-model.trim="$v.year.$model" :class="{ 'is-invalid': $v.year.$error}" class="form-control" id="year2"  placeholder="Enter the item year" required>
+                <div class="invalid-feedback">Invalid year.</div>
               </div>
               <div class="form-group">
                 <label for="condition">Condition</label>
@@ -145,7 +149,7 @@
               </div>
                 <div class="modal-footer">
                   <button type="button" v-on:click="getItems" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" v-on:click="updateItem" data-dismiss="modal" class="btn btn-success">Submit</button>
+                  <button type="submit" v-on:click="updateItem" class="btn btn-success">Submit</button>
                 </div>
             </form>
           </div>
@@ -180,6 +184,7 @@
 
 <script>
 import Items from '../services/ItemService';
+import { between } from 'vuelidate/lib/validators'
 
 export default {
   name: 'Items',
@@ -196,8 +201,14 @@ export default {
       },
       routeId: '',
       search:'',
-      id: ''
+      id: '',
+      value: '',
+      year:'',
     }
+  },
+  validations:{
+    value: {between: between(1,999999999999999)},
+    year: {between: between(1, 2020)},
   },
   // Search a specific item
   computed:{
@@ -214,15 +225,19 @@ export default {
   methods: {
     // Create a new item
     async addItem(){
-      this.item.collectionId = await this.routeId;
-      await Items.insertItem(this.item);
-      this.getItems();
-      this.item.collectionId = '';
-      this.item.name = '';
-      this.item.value = '';
-      this.item.year = '';
-      this.item.condition = '';
-      this.item.location = '';
+      if (this.year > 0 && this.year < 2021 && this.value > 0){
+        this.item.collectionId = await this.routeId;
+        await Items.insertItem(this.item);
+        this.getItems();
+        this.item.collectionId = '';
+        this.item.name = '';
+        this.item.value = '';
+        this.item.year = '';
+        this.item.condition = '';
+        this.item.location = '';
+        this.value = '';
+        this.year = '';
+      }
     },
     // Get's the items from the DB
     async getItems(){
@@ -235,18 +250,24 @@ export default {
     },
     // Modify a specific item
      async updateItem(){
-      await Items.updateItem(this.item._id,this.item);
-      this.getItems();
-      this.item.collectionId = '';
-      this.item.name = '';
-      this.item.value = '';
-      this.item.year = '';
-      this.item.condition = '';
-      this.item.location = '';
+       if(this.year > 0 && this.year < 2021 && this.value > 0){
+          await Items.updateItem(this.item._id,this.item);
+          this.getItems();
+          this.item.collectionId = '';
+          this.item.name = '';
+          this.item.value = '';
+          this.item.year = '';
+          this.item.condition = '';
+          this.item.location = '';
+          this.value = '';
+          this.year = '';
+       }
     },
     // Set an item in the inputs
     editItem(item){
       this.item = item;
+      this.year = item.year;
+      this.value = item.value;
       this.getItems();
     },
     // Get the id of a specific item
