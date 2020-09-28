@@ -15,4 +15,4 @@ npm install
 npm run serve
 ~~~
 
-Deployed app https://collector-tracker-app.herokuapp.com/
+Deployed app https://collectortracker.herokuapp.com/
